@@ -25,7 +25,7 @@ public class MenuPrincipal {
         int opcion = -1;
 
         do {
-            System.out.println("\n=== PLATAFORMA DE SUBASTAS ===");
+            System.out.println("\n== PLATAFORMA DE SUBASTAS ==");
             System.out.println("1. Registrar un nuevo usuario");
             System.out.println("2. Listar todos los usuarios");
             System.out.println("3. Registrar una subasta");
@@ -103,15 +103,15 @@ public class MenuPrincipal {
         System.out.print("Ingresa la identificación del usuario creador: ");
         String idUsuario = scanner.nextLine();
 
-        // 1. Buscamos si el usuario existe en nuestra memoria
+
         Usuario creador = admin.buscarUsuarioPorId(idUsuario);
 
         if (creador == null) {
             System.out.println("Error: No se encontró un usuario con esa identificación. Regístralo primero.");
-            return; // Cortamos la ejecución del método aquí
+            return;
         }
 
-        // 2. Si el usuario existe, pedimos los datos de la subasta
+
         System.out.print("Fecha de vencimiento (DD/MM/AAAA HH:MM) [Ej. 25/12/2026 15:30]: ");
         String fechaTexto = scanner.nextLine();
         DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -123,7 +123,7 @@ public class MenuPrincipal {
         System.out.print("Estado inicial (Ej. Activa, Pendiente): ");
         String estado = scanner.nextLine();
 
-        // Le pasamos el objeto 'creador' completo al controlador, cumpliendo con la relación UML
+
         admin.registrarSubasta(fechaVencimiento, creador, creador.getPuntuacion(), precioMinimo, estado);
         System.out.println("¡Subasta registrada con éxito por " + creador.getNombreCompleto() + "!");
     }

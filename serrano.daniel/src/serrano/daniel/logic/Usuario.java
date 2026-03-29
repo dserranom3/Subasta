@@ -1,6 +1,5 @@
 package serrano.daniel.logic;
 
-// Importamos las librerías necesarias para manejar las fechas
 import java.time.LocalDate;
 import java.time.Period;
 
