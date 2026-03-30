@@ -68,4 +68,13 @@ public class Subasta {
                 " | Precio mínimo: $" + precioMinimoAceptacion +
                 " | Tiempo restante: " + getTiempoRestante();
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subasta subasta = (Subasta) o;
+        // Son iguales si tienen la misma fecha límite Y el mismo creador
+        return java.util.Objects.equals(fechaVencimiento, subasta.fechaVencimiento) &&
+                java.util.Objects.equals(creador, subasta.creador);
+    }
 }

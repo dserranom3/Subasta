@@ -2,6 +2,7 @@ package serrano.daniel.logic;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 public class Usuario {
 
@@ -11,24 +12,17 @@ public class Usuario {
     private String contrasena;
     private String correoElectronico;
 
-
-    private int puntuacion;
-    private String direccion;
-
     public Usuario() {
     }
 
     public Usuario(String nombreCompleto, String identificacion, LocalDate fechaNacimiento,
-                   String contrasena, String correoElectronico, int puntuacion, String direccion) {
+                   String contrasena, String correoElectronico) {
         this.nombreCompleto = nombreCompleto;
         this.identificacion = identificacion;
         this.fechaNacimiento = fechaNacimiento;
         this.contrasena = contrasena;
         this.correoElectronico = correoElectronico;
-        this.puntuacion = puntuacion;
-        this.direccion = direccion;
     }
-
 
     public int getEdad() {
         if (this.fechaNacimiento != null) {
@@ -36,7 +30,6 @@ public class Usuario {
         }
         return 0;
     }
-
 
     public String getNombreCompleto() { return nombreCompleto; }
     public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
@@ -53,17 +46,17 @@ public class Usuario {
     public String getCorreoElectronico() { return correoElectronico; }
     public void setCorreoElectronico(String correoElectronico) { this.correoElectronico = correoElectronico; }
 
-    public int getPuntuacion() { return puntuacion; }
-    public void setPuntuacion(int puntuacion) { this.puntuacion = puntuacion; }
 
-    public String getDireccion() { return direccion; }
-    public void setDireccion(String direccion) { this.direccion = direccion; }
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(identificacion, usuario.identificacion);
+    }
 
     @Override
     public String toString() {
-        return "Usuario [" + identificacion + "] - " + nombreCompleto +
-                " | Edad: " + getEdad() + " años | Correo: " + correoElectronico +
-                " | Puntuación: " + puntuacion + " | Dirección: " + direccion;
+        return "[" + identificacion + "] " + nombreCompleto + " | Edad: " + getEdad() + " | Correo: " + correoElectronico;
     }
 }

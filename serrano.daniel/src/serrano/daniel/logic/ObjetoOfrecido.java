@@ -50,4 +50,12 @@ public class ObjetoOfrecido {
     public String toString() {
         return "Objeto: " + nombre + " (" + estado + ") | Antigüedad: " + getAntiguedad();
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true; // Es exactamente el mismo en memoria
+        if (o == null || getClass() != o.getClass()) return false; // Es de otra familia
+        ObjetoOfrecido that = (ObjetoOfrecido) o;
+        // Comparamos solo por el nombre del objeto
+        return java.util.Objects.equals(nombre, that.nombre);
+    }
 }

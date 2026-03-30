@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Controlador {
 
+    // 1. LAS LISTAS EN MEMORIA
     private ArrayList<Usuario> listaUsuarios;
     private ArrayList<Subasta> listaSubastas;
     private ArrayList<ObjetoOfrecido> listaObjetos;
@@ -18,17 +19,67 @@ public class Controlador {
         this.listaOfertas = new ArrayList<>();
     }
 
+    // =========================================================================
+    // VALIDACIONES Y REGLAS DE NEGOCIO
+    // =========================================================================
 
-    public void registrarUsuario(String nombreCompleto, String identificacion, LocalDate fechaNacimiento,
-                                 String contrasena, String correoElectronico, int puntuacion, String direccion) {
-
-
-        Usuario nuevoUsuario = new Usuario(nombreCompleto, identificacion, fechaNacimiento,
-                contrasena, correoElectronico, puntuacion, direccion);
-
-        listaUsuarios.add(nuevoUsuario);
+    public boolean existeModerador() {
+        for (Usuario u : listaUsuarios) {
+            // "instanceof" nos permite preguntar si un objeto pertenece a una clase específica
+            if (u instanceof Moderador) {
+                return true;
+            }
+        }
+        return false;
     }
 
+    // =========================================================================
+    // REGISTRO DE USUARIOS (HERENCIA APLICADA)
+    // =========================================================================
+
+    public boolean registrarModerador(String nombre, String id, LocalDate fechaNac, String pass, String correo) {
+        Moderador nuevoMod = new Moderador(nombre, id, fechaNac, pass, correo);
+
+        // Regla 8: El moderador debe ser mayor de edad
+        if (nuevoMod.getEdad() < 18) {
+            return false;
+        }
+        // Regla 2: Solo puede haber un único moderador
+        if (existeModerador()) {
+            return false;
+        }
+
+        listaUsuarios.add(nuevoMod);
+        return true; // Registro exitoso
+    }
+
+    public boolean registrarVendedor(String nombre, String id, LocalDate fechaNac, String pass, String correo, int puntos, String direccion) {
+        Vendedor nuevoVend = new Vendedor(nombre, id, fechaNac, pass, correo, puntos, direccion);
+
+        // Regla 7: El vendedor debe ser mayor de edad
+        if (nuevoVend.getEdad() < 18) {
+            return false;
+        }
+
+        listaUsuarios.add(nuevoVend);
+        return true;
+    }
+
+    public boolean registrarColeccionista(String nombre, String id, LocalDate fechaNac, String pass, String correo, int puntos, String direccion) {
+        Coleccionista nuevoCol = new Coleccionista(nombre, id, fechaNac, pass, correo, puntos, direccion);
+
+        // Regla 7: El coleccionista debe ser mayor de edad
+        if (nuevoCol.getEdad() < 18) {
+            return false;
+        }
+
+        listaUsuarios.add(nuevoCol);
+        return true;
+    }
+
+    // =========================================================================
+    // MÉTODOS DE BÚSQUEDA Y LISTADO
+    // =========================================================================
 
     public ArrayList<Usuario> listarUsuarios() {
         return listaUsuarios;
@@ -37,30 +88,32 @@ public class Controlador {
     public Usuario buscarUsuarioPorId(String identificacion) {
         for (Usuario u : listaUsuarios) {
             if (u.getIdentificacion().equals(identificacion)) {
-                return u; // Si lo encuentra, lo devuelve
+                return u;
             }
         }
-        return null; // Si no lo encuentra, devuelve nulo
+        return null;
     }
 
+    // =========================================================================
+    // MÉTODOS PARA SUBASTAS Y OFERTAS (Se mantienen igual por ahora)
+    // =========================================================================
 
     public void registrarSubasta(LocalDateTime fechaVencimiento, Usuario creador,
                                  int puntuacionCreador, double precioMinimo, String estado) {
-
         Subasta nuevaSubasta = new Subasta(fechaVencimiento, creador, puntuacionCreador, precioMinimo, estado);
         listaSubastas.add(nuevaSubasta);
     }
+
     public ArrayList<Subasta> listarSubastas() {
         return listaSubastas;
     }
-
 
     public void registrarObjeto(String nombre, String descripcion, String estado, LocalDate fechaCompra) {
         ObjetoOfrecido nuevoObjeto = new ObjetoOfrecido(nombre, descripcion, estado, fechaCompra);
         listaObjetos.add(nuevoObjeto);
     }
 
-    public void registrarOferta(Usuario oferente, double precioOfertado) {
+    public void registrarOferta(Coleccionista oferente, double precioOfertado) {
         Oferta nuevaOferta = new Oferta(oferente, precioOfertado);
         listaOfertas.add(nuevaOferta);
     }
